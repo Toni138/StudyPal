@@ -1,0 +1,119 @@
+﻿@model Flashcard
+@{
+    ViewData["Title"] = "Review Flashcard";
+}
+
+<div class="review-container">
+    <!-- Success Message -->
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Header with Back Button -->
+    <div class="header-section">
+        <form id="backForm" asp-action="ClearSessionAndReturn" method="post" style="display: inline;">
+            <button type="submit" class="back-btn border-0 bg-transparent p-0">
+                <i class="bi bi-arrow-left"></i>
+                <span>Back to Flashcards</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Main Flashcard -->
+    <div class="flashcard-wrapper">
+        <div class="flashcard-container" id="flashcardContainer">
+
+            <!-- Front Side (Question) -->
+            <div class="flashcard-side flashcard-front active" id="frontSide">
+                <div class="card-header">
+                    <div class="card-type-badge mb-3">
+                        <i class="bi bi-question-circle"></i>
+                        Question
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="content-text">@Model.Question</div>
+                </div>
+
+                <div class="card-footer">
+                    <button id="showAnswerBtn" class="show-answer-btn">
+                        <span>Reveal Answer</span>
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Back Side (Answer) -->
+            <div class="flashcard-side flashcard-back" id="backSide">
+                <div class="card-header">
+                    <div class="card-type-badge answer-badge mb-3">;
+                        <i class="bi bi-lightbulb"></i>
+                        Answer
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="content-text">@Model.Answer</div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="review-question">
+                        <p>How did you do?</p>
+                    </div>
+                    <div class="review-buttons">
+                        <form method="post" asp-action="MarkReview" asp-route-id="@Model.Id" class="review-form">
+                            <input type="hidden" name="isCorrect" value="false" />
+                            <button type="submit" class="review-btn wrong-btn">
+                                <i class="bi bi-x-circle"></i>
+                                <span>Got it Wrong</span>
+                            </button>
+                        </form>
+                        <form method="post" asp-action="MarkReview" asp-route-id="@Model.Id" class="review-form">
+                            <input type="hidden" name="isCorrect" value="true" />
+                            <button type="submit" class="review-btn correct-btn">
+                                <i class="bi bi-check-circle"></i>
+                                <span>Got it Right</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Indicator (if in session) -->
+    <div class="progress-section">
+        <div class="progress-dots">
+            <div class="progress-dot active"></div>
+            <div class="progress-text">Flashcard Review</div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.getElementById("showAnswerBtn").addEventListener("click", function () {
+            const frontSide = document.getElementById("frontSide");
+            const backSide = document.getElementById("backSide");
+
+            frontSide.classList.add("flipped");
+            frontSide.classList.remove("active");
+
+            setTimeout(() => {
+                backSide.classList.add("active");
+            }, 300);
+        });
+
+        // Optional: Add smooth scrolling for long content
+        const contentAreas = document.querySelectorAll('.card-content');
+        contentAreas.forEach(area => {
+            area.style.scrollBehavior = 'smooth';
+        });
+    </script>
+}

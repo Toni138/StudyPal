@@ -1,0 +1,48 @@
+﻿@* @model StudyPal.Models.TimetableInputModel
+
+<h2>Create Timetable</h2>
+<form asp-action="Generate" method="post">
+    <div>
+        <h3>Subjects</h3>
+        @for (int i = 0; i < Model.Subjects.Count; i++)
+        {
+            <div>
+                <input asp-for="Subjects[i].Name" placeholder="Subject Name" />
+                <select asp-for="Subjects[i].Difficulty">
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+            </div>
+        }
+        <button type="button" onclick="addSubject()">Add Subject</button>
+    </div>
+    <div>
+        <h3>Study Hours Per Day</h3>
+        @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
+        {
+            <div>
+                <label>@day</label>
+                <input type="number" min="0" name="DailyStudyHours[@day].Hours" value="0" />
+                <input type="hidden" name="DailyStudyHours[@day].Day" value="@day" />
+            </div>
+        }
+    </div>
+    <button type="submit">Generate Timetable</button>
+</form>
+
+<script>
+    function addSubject() {
+        var container = document.querySelector('div[h3="Subjects"]');
+        var index = container.children.length;
+        var div = document.createElement('div');
+        div.innerHTML = `
+            <input name="Subjects[${index}].Name" placeholder="Subject Name" />
+            <select name="Subjects[${index}].Difficulty">
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>`;
+        container.appendChild(div);
+    }
+</script> *@

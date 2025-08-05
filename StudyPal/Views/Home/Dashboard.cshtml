@@ -1,0 +1,86 @@
+﻿@model UserStats
+@{
+    var username = Context.Session.GetString("Username");
+    bool isLoggedIn = !string.IsNullOrEmpty(username);
+
+    var encouragementTips = new List<string> {
+        "Keep up the great work!",
+        "Every study hour counts!",
+        "Consistency is the key to success.",
+        "Take breaks to stay refreshed.",
+        "You’re doing amazing, keep pushing!"
+    };
+    var random = new Random();
+    var tip = encouragementTips[random.Next(encouragementTips.Count)];
+}
+
+
+<div class="dashboard-container">
+    <h2 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h2>
+    <p class="fs-5">
+        Welcome back <strong>@username</strong> <i class="bi bi-emoji-smile"></i>
+    </p>
+
+    <div class="encouragement-tip">
+        <i class="bi bi-lightbulb-fill text-warning me-2"></i><strong>Tip of the day:</strong> @tip
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <h5><i class="bi bi-fire text-danger"></i> Current Streak</h5>
+                <p class="mb-0">@Model.CurrentStreak days</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5><i class="bi bi-check2-square text-success"></i> Longest Streak</h5>
+                <p class="mb-0">@Model.LongestStreak days</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5><i class="bi bi-clock-history text-primary"></i> Total Study Hours</h5>
+                <p class="mb-0">@Model.TotalStudyHours hours</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5><i class="bi bi-bar-chart-line text-info"></i> Average Daily Study</h5>
+                <p class="mb-0">@Model.AverageDailyStudyHours hours/day</p>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <h5><i class="bi bi-journal-check text-secondary"></i> Flashcards Reviewed</h5>
+                <p class="mb-0">@Model.FlashcardsReviewed cards</p>
+            </div>
+        </div>
+    </div>
+    @*  Example: From TimeSpan duration
+    var formatted = $"{duration.Hours}h {duration.Minutes}m {duration.Seconds}s";
+    Output: "0h 0m 8s" *@
+    @if (Model.HoursPerSubject != null && Model.HoursPerSubject.Any())
+    {
+        <div class="mt-4">
+            <h4><i class="bi bi-book-half"></i> Study Time by Subject:</h4>
+            <div class="row">
+                @foreach (var subjectHour in Model.HoursPerSubject)
+                {
+                    <div class="col-md-6">
+                        <div class="card">
+                            <h6><i class="bi bi-bookmark-star text-warning me-1"></i> @subjectHour.SubjectName</h6>
+                            <p class="mb-0">@subjectHour.Hours hours</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card mt-4">
+            <p><i class="bi bi-exclamation-circle"></i> No subject-specific study hours recorded yet.</p>
+        </div>
+    }
+</div>

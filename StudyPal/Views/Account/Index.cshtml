@@ -1,0 +1,55 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg p-4 rounded-4">
+                <div class="text-center mb-3">
+                    <h2 class="fw-bold">Profile</h2>
+                    <p class="text-muted">@Model.Username</p>
+                </div>
+
+                @if (TempData["success"] != null)
+                {
+                    <div class="alert alert-success">@TempData["success"]</div>
+                }
+                @if (TempData["error"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["error"]</div>
+                }
+
+                    @* <div class="form-floating mb-3">
+                        <input asp-for="Username" class="form-control disabled" placeholder="user" aria-required="true" />
+                        <label asp-for="Username">Username</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="EmailAddress" type="password" class="form-control disabled" placeholder="example@gmail.com" aria-required="true" />
+                        <label asp-for="EmailAddress">Email</label>
+                    </div> *@
+
+                   <a asp-action="Update" class="btn btn-outline-primary">Update Account Details</a>
+               
+               
+            </div>
+        </div>
+    </div>
+</div>
+@* @model User
+@{
+    ViewData["Title"] = "Profile";
+}
+<h1>@Model.Username</h1>
+<ul>
+    <li>
+        <label asp-for="EmailAddress">Email Address: </label>
+        <input asp-for="EmailAddress" class="disabled border-0"/>
+    </li>
+    <li>
+      <a asp-action="Update">Update Account Details</a>
+    </li>
+</ul> *@

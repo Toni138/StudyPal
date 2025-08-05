@@ -1,0 +1,19 @@
+﻿@model User
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+
+@{
+    ViewData["Title"] = "Confirm Email";
+}
+
+<h1 class="display-4">Confirm Your Email</h1>
+
+
+<p>Please confirm your email by clicking the button below:</p>
+
+<form asp-action="ConfirmEmailPost" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-primary">Confirm Email</button>
+</form>

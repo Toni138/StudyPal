@@ -1,0 +1,53 @@
+﻿<body>
+    <!-- 1. Sidebar -->
+    <div id="sidebar">
+        <!-- Your navigation links here -->
+    </div>
+
+    <!-- 2. Main area -->
+    <div id="mainContent">
+
+        <!-- Timer panel -->
+        <div id="studyTimerPanel">...</div>
+
+        <!-- Dynamic area (only this part will change!) -->
+        <div id="dynamicPageArea"></div>
+    </div>
+
+    <!-- 3. Floating Timer -->
+    <div id="floatingTimer">...</div>
+</body>
+<script>
+    function navigateToPage(page) {
+      fetch(page)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('dynamicPageArea').innerHTML = html;
+
+          // Hide the main timer if it's visible
+          document.getElementById('studyForm').style.display = 'none';
+          document.getElementById('timerSection').classList.remove('show');
+        })
+        .catch(() => {
+          document.getElementById('dynamicPageArea').innerHTML = '<p class="text-danger">Failed to load content.</p>';
+        });
+    }
+
+    // Attach the click event to all sidebar links with data-page
+    document.addEventListener('DOMContentLoaded', function () {
+      const links = document.querySelectorAll('[data-page]');
+      links.forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          navigateToPage(this.getAttribute('data-page'));
+        });
+      });
+    });
+
+    // Optional: Return to timer view
+    function returnToTimer() {
+      document.getElementById('dynamicPageArea').innerHTML = '';
+      document.getElementById('studyForm').style.display = 'none';
+      document.getElementById('timerSection').classList.add('show');
+    }
+</script>

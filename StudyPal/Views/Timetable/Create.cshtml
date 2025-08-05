@@ -1,0 +1,352 @@
+﻿@{
+    ViewData["Title"] = "Study Timetable Creator";
+}
+
+    <div class="container">
+        <h2>📚 Create Study Timetable</h2>
+
+        <form id="timetableForm" method="post">
+            <div class="form-section">
+                <h3>📖 Subjects</h3>
+                <div id="subjects-container">
+                    <div class="subject-group">
+                        <input name="Subjects[0].Name" placeholder="Enter subject name" required />
+                        <select name="Subjects[0].Difficulty" required>
+                            <option value="">Select Difficulty</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                        <button type="button" class="remove-btn" onclick="removeSubject(this)" title="Remove subject">×</button>
+                    </div>
+                </div>
+                <button type="button" id="addSubjectBtn" class="btn btn-secondary">
+                    ➕ Add Another Subject
+                </button>
+            </div>
+
+            <div class="form-section">
+                <h3>⏰ Study Hours Per Day</h3>
+                <div class="day-group">
+                    <label>Sunday</label>
+                    <input type="number" min="0" max="24" name="DailyStudyHours[Sunday].Hours" value="0" />
+                    <input type="hidden" name="DailyStudyHours[Sunday].Day" value="Sunday" />
+                </div>
+                <div class="day-group">
+                    <label>Monday</label>
+                    <input type="number" min="0" max="24" name="DailyStudyHours[Monday].Hours" value="0" />
+                    <input type="hidden" name="DailyStudyHours[Monday].Day" value="Monday" />
+                </div>
+                <div class="day-group">
+                    <label>Tuesday</label>
+                    <input type="number" min="0" max="24" name="DailyStudyHours[Tuesday].Hours" value="0" />
+                    <input type="hidden" name="DailyStudyHours[Tuesday].Day" value="Tuesday" />
+                </div>
+                <div class="day-group">
+                    <label>Wednesday</label>
+                    <input type="number" min="0" max="24" name="DailyStudyHours[Wednesday].Hours" value="0" />
+                    <input type="hidden" name="DailyStudyHours[Wednesday].Day" value="Wednesday" />
+                </div>
+                <div class="day-group">
+                    <label>Thursday</label>
+                    <input type="number" min="0" max="24" name="DailyStudyHours[Thursday].Hours" value="0" />
+                    <input type="hidden" name="DailyStudyHours[Thursday].Day" value="Thursday" />
+                </div>
+                <div class="day-group">
+                    <label>Friday</label>
+                    <input type="number" min="0" max="24" name="DailyStudyHours[Friday].Hours" value="0" />
+                    <input type="hidden" name="DailyStudyHours[Friday].Day" value="Friday" />
+                </div>
+                <div class="day-group">
+                    <label>Saturday</label>
+                    <input type="number" min="0" max="24" name="DailyStudyHours[Saturday].Hours" value="0" />
+                    <input type="hidden" name="DailyStudyHours[Saturday].Day" value="Saturday" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-submit">
+                🚀 Generate My Timetable
+            </button>
+        </form>
+    </div>
+
+    <style>
+    /* .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    } */
+
+    /* h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    h3 {
+        color: #444;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 10px;
+    } */
+
+    .form-section {
+        margin-bottom: 40px;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 15px;
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .subject-group {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        align-items: center;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .subject-group:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .subject-group input {
+            flex: 2;
+        }
+
+        .subject-group select {
+            flex: 1;
+        }
+
+    .remove-btn {
+        background: #ff4757;
+        color: white;
+        border: none;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+        .remove-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
+        }
+
+    input, select {
+        padding: 12px 16px;
+        border: 2px solid #e1e8ed;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+    .day-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+        .day-group label {
+            font-weight: 600;
+            color: #555;
+            width: 120px;
+            font-size: 16px;
+        }
+
+        .day-group input {
+            width: 100px;
+            margin-left: auto;
+        }
+
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        color: white;
+        margin-bottom: 20px;
+    }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+    .btn-submit {
+        width: 100%;
+        padding: 16px;
+        font-size: 18px;
+        margin-top: 30px;
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #888;
+        font-style: italic;
+    }
+
+
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const addBtn = document.getElementById('addSubjectBtn');
+            const container = document.getElementById('subjects-container');
+
+            addBtn.addEventListener('click', function () {
+                const index = container.querySelectorAll('.subject-group').length;
+                const div = document.createElement('div');
+                div.className = 'subject-group';
+                div.innerHTML = `
+                    <input name="Subjects[${index}].Name" placeholder="Enter subject name" required />
+                    <select name="Subjects[${index}].Difficulty" required>
+                        <option value="">Select Difficulty</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                    <button type="button" class="remove-btn" onclick="removeSubject(this)" title="Remove subject">×</button>
+                `;
+                container.appendChild(div);
+            });
+
+            // Form submission handler
+            document.getElementById('timetableForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Collect form data
+                const formData = new FormData(this);
+                const data = {};
+
+                // Process subjects
+                const subjects = [];
+                const subjectInputs = document.querySelectorAll('[name^="Subjects["]');
+                const processedIndices = new Set();
+
+                subjectInputs.forEach(input => {
+                    const match = input.name.match(/Subjects\[(\d+)\]\.(\w+)/);
+                    if (match) {
+                        const index = parseInt(match[1]);
+                        const property = match[2];
+
+                        if (!subjects[index]) {
+                            subjects[index] = {};
+                        }
+                        subjects[index][property] = input.value;
+                        processedIndices.add(index);
+                    }
+                });
+
+                // Process daily study hours
+                const dailyHours = {};
+                const hourInputs = document.querySelectorAll('[name*="DailyStudyHours"]');
+                hourInputs.forEach(input => {
+                    const match = input.name.match(/DailyStudyHours\[(\w+)\]\.(\w+)/);
+                    if (match) {
+                        const day = match[1];
+                        const property = match[2];
+
+                        if (!dailyHours[day]) {
+                            dailyHours[day] = {};
+                        }
+                        dailyHours[day][property] = input.value;
+                    }
+                });
+
+                data.subjects = subjects.filter(subject => subject && subject.Name && subject.Difficulty);
+                data.dailyStudyHours = dailyHours;
+
+                // Display collected data (in a real app, this would be sent to server)
+                console.log('Timetable Data:', data);
+                alert('Timetable data collected! Check console for details. In a real application, this would be sent to the server.');
+            });
+        });
+
+        function removeSubject(button) {
+            const subjectGroup = button.parentElement;
+            const container = document.getElementById('subjects-container');
+
+            // Don't allow removing the last subject
+            if (container.querySelectorAll('.subject-group').length > 1) {
+                subjectGroup.remove();
+                updateSubjectIndices();
+            } else {
+                alert('You must have at least one subject!');
+            }
+        }
+
+        function updateSubjectIndices() {
+            const container = document.getElementById('subjects-container');
+            const subjectGroups = container.querySelectorAll('.subject-group');
+
+            subjectGroups.forEach((group, index) => {
+                const nameInput = group.querySelector('input[name*="Name"]');
+                const difficultySelect = group.querySelector('select[name*="Difficulty"]');
+
+                if (nameInput) nameInput.name = `Subjects[${index}].Name`;
+                if (difficultySelect) difficultySelect.name = `Subjects[${index}].Difficulty`;
+            });
+        }
+    </script>

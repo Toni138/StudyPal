@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyModels;
+using Utility;
 
 namespace StudyPal.Controllers
 {
@@ -62,7 +63,6 @@ namespace StudyPal.Controllers
         [Route("api/study/save-session")]
         public async Task<IActionResult> SaveSession([FromBody] SessionDto dto)
         {
-            Console.WriteLine("🔥 SaveSession endpoint hit!");
             if (ModelState.IsValid)
             {
                 string userIdString = HttpContext.Session.GetString("UserId");
@@ -81,6 +81,11 @@ namespace StudyPal.Controllers
                 };
 
                 _unitOfWork.StudySession.Add(session);
+                var UserStats = _unitOfWork.UserStats.Get(f => f.UserId == userId);
+                bool hasStudiedToday = true;
+                var streakManager = new StreakManager(_unitOfWork);
+                streakManager.UpdateStreak(UserStats, null, hasStudiedToday);
+
                 await _unitOfWork.SaveAsync();
                 Console.WriteLine("Session saved");
                 return Ok("Session saved");

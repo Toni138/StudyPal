@@ -9,7 +9,7 @@
 
     var username = Context.Session.GetString("Username");
     bool isLoggedIn = !string.IsNullOrEmpty(username);
-   
+
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
 
@@ -26,8 +26,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false)
     <link rel="stylesheet" href="~/StudyPal.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <style>
@@ -49,7 +49,7 @@
                 {
                     <a class="nav-link text-dark">StudyPal</a>
                 }
-                
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -71,9 +71,9 @@
                     @if (isLoggedIn)
                     {
                         <a class="btn ml-3 " asp-controller="Account" asp-action="Index"><i class="bi bi-person-circle"></i> Profile</a>
-                      
+
                         <form asp-controller="Home" asp-action="Logout" method="post" class="d-inline">
-                            <button type="submit"  id="logoutBtn" class="btn btn-outline-primary  border-0">Logout</button>
+                            <button type="submit" id="logoutBtn" class="btn btn-outline-primary  border-0">Logout</button>
                         </form>
                     }
                 </div>
@@ -89,9 +89,9 @@
                     Menu
                 </div>
                 <div class="list-group list-group-flush sidebar-list " id="sidebar-list">
-                    <a class="list-group-item list-group-item-action p-3"  asp-controller="Home" asp-action="Dashboard">Dashboard</a>
+                    <a class="list-group-item list-group-item-action p-3" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
                     <a class="list-group-item list-group-item-action p-3" asp-controller="Flashcards" asp-action="Index">Flashcards</a>
-                    @* <a class="list-group-item list-group-item-action p-3" asp-controller="Timetable" asp-action="DisplayTimetable">Make a Timetable</a> *@
+                    <a class="list-group-item list-group-item-action p-3" asp-controller="Timetable" asp-action="DisplayTimetable">Make a Timetable</a>
                     <a class="list-group-item list-group-item-action p-3" asp-controller="Study" asp-action="SessionForm">Study Now</a>
                 </div>
             </div>
@@ -100,15 +100,15 @@
         <div class="container" style="flex-grow: 1;">
             <main role="main" class="pb-3">
                 @RenderBody()
-                @if (!(controller == "Home" && (action == "Login" || action == "Register" || action=="Index")) && !(controller=="Study" && (action=="SessionForm")))
-{
-    @Html.Partial("_FloatingTimer")
-}
-     @if (!(controller == "Home" && (action == "Login" || action == "Register" || action=="Index")))
-{
-    @Html.Partial("_SessionComplete")
-}
-<script src="~/js/timer.js"></script>
+                @if (!(controller == "Home" && (action == "Login" || action == "Register" || action == "Index")) && !(controller == "Study" && (action == "SessionForm")))
+                {
+                    @Html.Partial("_FloatingTimer")
+                }
+                @if (!(controller == "Home" && (action == "Login" || action == "Register" || action == "Index")))
+                {
+                    @Html.Partial("_SessionComplete")
+                }
+                <script src="~/js/timer.js"></script>
             </main>
         </div>
     </div>
@@ -124,8 +124,8 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-    const isUserLoggedIn = @isLoggedIn.ToString().ToLower();
-</script>
+        const isUserLoggedIn = @isLoggedIn.ToString().ToLower();
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

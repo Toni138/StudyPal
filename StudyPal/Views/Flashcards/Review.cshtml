@@ -2,7 +2,9 @@
 @{
     ViewData["Title"] = "Review Flashcard";
 }
-
+@section Styles {
+    <link rel="stylesheet" href="~/css/flashcards.css" />
+}
 <div class="review-container">
     <!-- Success Message -->
     @if (TempData["success"] != null)

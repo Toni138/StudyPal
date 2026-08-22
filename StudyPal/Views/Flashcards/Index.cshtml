@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "My Flashcards";
 }
+@section Styles {
+    <link rel="stylesheet" href="~/css/flashcards.css" />
+}
 @{
                        var tagCount = Model
                     .Where(f => !string.IsNullOrWhiteSpace(f.Tag))

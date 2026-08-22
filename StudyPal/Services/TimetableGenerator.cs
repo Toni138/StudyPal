@@ -1,10 +1,9 @@
-﻿using DataAccess.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.Repository.IRepository;
 using MyModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataAccess.Repository.IRepository;
+using System.Threading.Tasks;
 
 namespace StudyPal.Services;
 
@@ -17,49 +16,149 @@ public class TimetableGenerator
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<List<StudySession>> GenerateTimetableAsync(List<Subject> subjects, List<DailyStudyHours> dailyStudyHours, Guid userId)
+    public async Task<List<StudySession>> GenerateTimetableAsync(
+        List<Subject> subjects,
+        List<DailyFreeSlots> dailyFreeSlots,
+        Guid userId)
     {
-        var timetable = new List<StudySession>();
-        var random = new Random();
+        // Remove invalid subjects
+        subjects = subjects.Where(s => !string.IsNullOrWhiteSpace(s.Name)).ToList();
 
-        foreach (var day in dailyStudyHours.Where(d => d.Hours > 0))
+        if (subjects.Count == 0)
+            throw new ArgumentException("At least one valid subject is required");
+
+        int totalAvailableMinutes = CalculateTotalAvailableMinutes(dailyFreeSlots);
+
+        if (totalAvailableMinutes < 10)
+            throw new ArgumentException("Not enough free time to generate a meaningful timetable.");
+
+        // STEP 1: Assign weights
+        var weightedSubjects = subjects.Select(s => new
         {
-            int remainingHours = day.Hours;
-            var availableSubjects = subjects.OrderBy(s => random.Next()).ToList();
+            Subject = s,
+            Weight = GetDifficultyWeight(s.Difficulty)
+        }).ToList();
 
-            DateTime startTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 9, 0, 0); // Start at 9 AM
-            foreach (var subject in availableSubjects)
+        int totalWeight = weightedSubjects.Sum(ws => ws.Weight);
+
+        // STEP 2: Estimate sessions and breaks
+        int estimatedSessions = (int)Math.Ceiling((double)totalAvailableMinutes / 60);
+        int estimatedBreaks = Math.Max(0, estimatedSessions - 1);
+        int totalBreakTime = estimatedBreaks * 10;
+
+        // STEP 3: Calculate study time after reserving breaks
+        int availableForStudy = totalAvailableMinutes - totalBreakTime;
+
+        if (availableForStudy <= 0)
+            throw new ArgumentException("Not enough time after accounting for breaks");
+
+        // STEP 4: Ensure each subject gets at least 10 mins
+        int minRequired = subjects.Count * 10;
+
+        if (availableForStudy < minRequired)
+            throw new ArgumentException("Not enough time to include all subjects with minimum duration");
+
+        availableForStudy -= minRequired;
+
+        // STEP 5: Distribute remaining time proportionally
+        var budgets = weightedSubjects.ToDictionary(
+            ws => ws.Subject.Name,
+            ws => 10 + (int)Math.Round((double)availableForStudy * ws.Weight / totalWeight)
+        );
+
+        var timetable = new List<StudySession>();
+
+        // STEP 6: Schedule sessions
+        foreach (var day in dailyFreeSlots)
+        {
+            if (day.FreeSlots == null || !day.FreeSlots.Any()) continue;
+
+            bool hasSessionToday = false;
+
+            foreach (var slot in day.FreeSlots.Where(s => s.EndTime > s.StartTime))
             {
-                if (remainingHours <= 0) break;
+                DateTime currentTime = DateTime.Today
+                    .AddDays((int)day.Day - (int)DateTime.Today.DayOfWeek)
+                    .Add(slot.StartTime.ToTimeSpan());
 
-                int sessionHours = Math.Min(remainingHours, GetHoursForDifficulty(subject.Difficulty));
-                var session = new StudySession
+                int remainingInSlot = (int)(slot.EndTime - slot.StartTime).TotalMinutes;
+
+                while (remainingInSlot > 0)
                 {
-                    UserId = userId, // Use the passed userId
-                    Subject = subject.Name,
-                    StartTime = startTime,
-                    EndTime = startTime.AddHours(sessionHours),
-                    DayOfWeek = day.Day
-                };
+                    var next = budgets
+                        .Where(b => b.Value > 0)
+                        .OrderByDescending(b => b.Value)
+                        .FirstOrDefault();
 
-                timetable.Add(session);
-                _unitOfWork.StudySession.Add(session);
-                remainingHours -= sessionHours;
-                startTime = startTime.AddHours(sessionHours + 0.5); // 30-min break
+                    if (next.Key == null) goto SlotDone;
+
+                    // Add break if not first session
+                    if (hasSessionToday)
+                    {
+                        if (remainingInSlot < 10) break;
+
+                        currentTime = currentTime.AddMinutes(10);
+                        remainingInSlot -= 10;
+                    }
+
+                    // Session must be between 10 and 60 mins
+                    int sessionMinutes = Math.Min(60, Math.Min(next.Value, remainingInSlot));
+
+                    if (sessionMinutes < 10) break;
+
+                    var session = new StudySession
+                    {
+                        UserId = userId,
+                        Subject = next.Key,
+                        StartTime = currentTime,
+                        EndTime = currentTime.AddMinutes(sessionMinutes),
+                        DayOfWeek = day.Day
+                    };
+
+                    timetable.Add(session);
+                    _unitOfWork.StudySession.Add(session);
+
+                    budgets[next.Key] -= sessionMinutes;
+
+                    currentTime = currentTime.AddMinutes(sessionMinutes);
+                    remainingInSlot -= sessionMinutes;
+
+                    hasSessionToday = true;
+                }
             }
+
+        SlotDone:;
         }
 
         await _unitOfWork.SaveAsync();
         return timetable;
     }
 
-    private int GetHoursForDifficulty(string difficulty)
+    private int CalculateTotalAvailableMinutes(List<DailyFreeSlots> dailyFreeSlots)
     {
-        return difficulty switch
+        int total = 0;
+
+        foreach (var day in dailyFreeSlots)
         {
-            "Easy" => 1,
-            "Medium" => 2,
-            "Hard" => 3,
+            if (day.FreeSlots == null) continue;
+
+            foreach (var slot in day.FreeSlots)
+            {
+                if (slot.EndTime > slot.StartTime)
+                    total += (int)(slot.EndTime - slot.StartTime).TotalMinutes;
+            }
+        }
+
+        return total;
+    }
+
+    private int GetDifficultyWeight(string difficulty)
+    {
+        return difficulty?.ToLower() switch
+        {
+            "hard" => 3,
+            "medium" => 2,
+            "easy" => 1,
             _ => 1
         };
     }

@@ -79,6 +79,12 @@ namespace StudyPal.Controllers
                 ModelState.AddModelError(string.Empty, "The email is already registered. Login or create a new account");
                 return View(model);
             }
+            var existingUsername = _unitOfWork.User.Get(u => u.Username == model.Username);
+            if (existingUsername != null)
+            {
+                ModelState.AddModelError(string.Empty, "That username is already taken.");
+                return View(model);
+            }
 
             user = new User
             {
@@ -100,14 +106,13 @@ namespace StudyPal.Controllers
             };
             user.UserStats = userStats;
 
-            _unitOfWork.User.Add(user);
-            _unitOfWork.UserStats.Add(userStats); 
+            _unitOfWork.User.Add(user); 
            await _unitOfWork.SaveAsync();
 
             TempData["success"] = "Registration Successful.";
             return RedirectToAction("ConfirmEmail", new { id = user.Id });
         }
-
+        [HttpPost]
         public async Task<IActionResult> ConfirmEmailPost(Guid id)
         {
             var user = _unitOfWork.User.Get(u => u.Id == id);
@@ -153,15 +158,34 @@ namespace StudyPal.Controllers
 
             if (!user.IsEmailVerified)
             {
-                ModelState.AddModelError(string.Empty, "Please confirm your email before logging in.");
+                TempData["error"] = "Please confirm your email before logging in.";
                 return RedirectToAction("ConfirmEmail", new { id = user.Id });
 
             }
-            //user.FailedLoginAttempts = failedLoginAttempts;
-           await  _unitOfWork.SaveAsync();
+            if (!passwordIsValid)
+            {
+                user.FailedLoginAttempts++;
+                if (user.FailedLoginAttempts >= 5)
+                {
+                    ModelState.AddModelError(string.Empty, "Account locked. Too many failed attempts.");
+                    _unitOfWork.User.Update(user);
+                    await _unitOfWork.SaveAsync();
+                    return View(model);
+                }
+                _unitOfWork.User.Update(user);
+                await _unitOfWork.SaveAsync();
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(model);
+            }
+            user.FailedLoginAttempts = 0; // reset on success
+            var UserStats = _unitOfWork.UserStats.Get(f => f.UserId == user.Id);
+            var streakManager = new StreakManager(_unitOfWork);
+            streakManager.UpdateStreak(UserStats, null, null);
+            await  _unitOfWork.SaveAsync();
             HttpContext.Session.SetString("AppRestartToken", AppSessionValidator.AppRestartToken);
             HttpContext.Session.SetString("Username", user.Username);
             HttpContext.Session.SetString("UserId", user.Id.ToString());
+            
             return RedirectToAction("Dashboard");
         }
 

@@ -1,0 +1,134 @@
+/* ============================================================
+   StudyPal – Login Page (Warm Focus Palette)
+   ============================================================ */
+
+.login-wrapper {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(27, 42, 74, 0.08);
+    width: 100%;
+    max-width: 440px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Coral accent bar at the top – lively without shouting */
+.accent-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #FF6B5B 0%, #98D8C8 100%);
+}
+
+.login-title {
+    color: #1B2A4A; /* Deep Navy */
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    padding: 1.5rem 2rem 0 2rem;
+}
+
+.login-subtitle {
+    color: #8E9AAF; /* Muted Slate */
+    font-weight: 400;
+    font-size: 0.95rem;
+    padding: 0 2rem 1.5rem 2rem;
+    margin-bottom: 0;
+}
+
+.login-form {
+    padding: 0 2rem 1.5rem 2rem;
+}
+
+/* Form controls – clean & calm */
+.form-label {
+    font-weight: 600;
+    color: #1B2A4A;
+    margin-bottom: 0.3rem;
+}
+
+.input-group-text {
+    background-color: #FDF6F0;
+    border-color: #E0DCD5;
+    color: #8E9AAF;
+}
+
+.form-control {
+    border-color: #E0DCD5;
+    color: #1B2A4A;
+    background-color: #FDF6F0;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+    .form-control:focus {
+        border-color: #FF6B5B;
+        box-shadow: 0 0 0 0.2rem rgba(255, 107, 91, 0.15);
+        background-color: #fff;
+    }
+
+.form-check-input:checked {
+    background-color: #FF6B5B;
+    border-color: #FF6B5B;
+}
+
+.form-check-label {
+    color: #1B2A4A;
+}
+
+.forgot-link {
+    color: #8E9AAF;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+    .forgot-link:hover {
+        color: #FF6B5B;
+    }
+
+/* Login button – coral with smooth hover */
+.btn-login {
+    padding: 0.7rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: all 0.25s;
+}
+
+    .btn-login:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(255, 107, 91, 0.35);
+    }
+
+/* Registration link & footer */
+.login-footer {
+    padding: 1.2rem 2rem 1.8rem 2rem;
+    background-color: #FAF8F5; /* slightly warmer than ivory */
+    border-top: 1px solid #F0EDE8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.register-prompt {
+    color: #8E9AAF;
+    font-size: 0.9rem;
+}
+
+.btn-register {
+    padding: 0.35rem 1.2rem;
+    font-weight: 500;
+    transition: all 0.25s;
+}
+
+    .btn-register:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(152, 216, 200, 0.3);
+    }

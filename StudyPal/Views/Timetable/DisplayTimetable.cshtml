@@ -1,45 +1,55 @@
 ﻿@model List<MyModels.StudySession>
 
-<h2>Your Timetable</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Day</th>
-            <th>Subject</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-        </tr>
-    </thead>
-    <tbody>
-         @if (Model == null || !Model.Any())
+<div class="board-container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-5 px-4">
+        <h2 class="fw-bold m-0" style="color: black;">✨ My Study Timeline</h2>
+        <a asp-action="Create" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm">
+            + Add New
+        </a>
+    </div>
+
+    <div class="timeline-wrapper">
+        @{
+            var days = new[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+            // Array of your original color classes
+            var colorClasses = new[] { "note-yellow", "note-green", "note-blue", "note-orange", "note-pink" };
+            int colorIdx = 0;
+        }
+
+        @foreach (var day in days)
         {
-            <!-- Empty State -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center py-5">
-                            <div class="mb-3">
-                                <i class="bi bi-calendar4-week display-1 text-muted"></i>
+            var sessions = Model?.Where(s => s.DayOfWeek.ToString() == day).OrderBy(s => s.StartTime).ToList();
+
+            <div class="timeline-row">
+                <div class="day-sidebar">
+                    <span class="day-text">@day.Substring(0, 3)</span>
+                </div>
+
+                <div class="sessions-track">
+                    @if (sessions != null && sessions.Any())
+                    {
+                        @foreach (var session in sessions)
+                        {
+                            var currentClass = colorClasses[colorIdx % colorClasses.Length];
+
+                            <div class="sticky-note @currentClass">
+                                <div class="note-time">
+                                    @session.StartTime.ToString("h:mm") - @session.EndTime.ToString("h:mm tt")
+                                </div>
+                                <h3 class="note-subject">@session.Subject</h3>
                             </div>
-                            <h4 class="text-muted mb-2">No Timetable</h4>
-                        </div>
-                    </div>
+
+                            colorIdx++; // Move to next color for next session
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted small align-self-center" style="opacity: 0.3; color: #FDF5E6 !important;">
+                            No sessions planned
+                        </span>
+                    }
                 </div>
             </div>
         }
-        else
-        {
-            @foreach (var session in Model)
-            {
-                <tr>
-                    <td>@session.DayOfWeek</td>
-                    <td>@session.Subject</td>
-                    <td>@session.StartTime.ToString("hh:mm tt")</td>
-                    <td>@session.EndTime.ToString("hh:mm tt")</td>
-                </tr>
-            }
-        }
-       
-    </tbody>
-</table>
-<a asp-action="Create">Create Another Timetable</a>
+    </div>
+</div>

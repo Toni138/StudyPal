@@ -1,23 +1,85 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
-.about-intro,.prompt{
-    color:orange;
-    font-size: 25px;
-    font-weight:100;
+/* ============================================================
+       StudyPal – Warm Focus Palette (Landing Page)
+       ============================================================ */
+
+/* ---- 1. Base & Body ---- */
+body {
+    background-color: #FDF6F0; /* Warm Ivory */
+    color: #1B2A4A; /* Deep Navy */
 }
+
+/* ---- 2. Typography ---- */
+.display-4,
+h1, h2, h3, h4, h5, h6 {
+    color: #1B2A4A; /* Consistent heading color */
+}
+
+.about-intro,
+.prompt {
+    color: #8E9AAF; /* Muted Slate */
+}
+
+/* ---- 3. Feature Cards ---- */
+.border.rounded.shadow-sm {
+    border-color: #8E9AAF !important;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .border.rounded.shadow-sm:hover {
+        border-color: #FF6B5B !important;
+        box-shadow: 0 0.5rem 1rem rgba(255, 107, 91, 0.15) !important;
+    }
+
+/* ---- 4. Buttons ---- */
+/* Primary action: Coral */
+.btn-coral {
+    background-color: #FF6B5B;
+    border-color: #FF6B5B;
+    color: #ffffff;
+}
+
+    .btn-coral:hover,
+    .btn-coral:focus {
+        background-color: #e85d4f;
+        border-color: #e85d4f;
+        color: #ffffff;
+    }
+
+/* Secondary action: Mint outline */
+.btn-outline-mint {
+    border-color: #98D8C8;
+    color: #98D8C8;
+    background-color: transparent;
+}
+
+    .btn-outline-mint:hover {
+        background-color: #98D8C8;
+        color: #1B2A4A;
+    }
+
+/* ---- 5. Icons ---- */
+.bi-rocket-takeoff-fill {
+    color: #FF6B5B !important; /* Energetic rocket */
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
+
 .sidebar, .list-group-item {
     background-color: #d2e0f7;
 }
+
 .dashboard-container {
     background: linear-gradient(135deg, #fdfbfb, #ebedee);
     padding: 30px;
@@ -31,10 +93,12 @@ html {
     padding: 20px;
     margin-bottom: 20px;
 }
-.question{
-   flex:auto;
-   margin-right:5px;
+
+.question {
+    flex: auto;
+    margin-right: 5px;
 }
+
 .encouragement-tip {
     font-size: 1.1rem;
     background-color: #e7f4ff;
@@ -44,6 +108,7 @@ html {
     border-radius: 5px;
     color: #333;
 }
+
 .flashcard-item {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border-left: 4px solid transparent;
@@ -76,6 +141,7 @@ html {
 .card {
     border-radius: 10px;
 }
+
 .flashcard-wrapper {
     display: flex;
     justify-content: center;
@@ -109,7 +175,7 @@ html {
     transform: rotateY(-180deg);
     transition: all 0.6s ease-in-out;
     backface-visibility: hidden;
-    overflow:hidden;
+    overflow: hidden;
 }
 
     .flashcard-side.active {
@@ -214,6 +280,7 @@ html {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
 .review-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -232,7 +299,6 @@ html {
 .header-section {
     max-width: 800px;
     margin: 0 auto 30px;
-
 }
 
 .back-btn {
@@ -460,9 +526,9 @@ html {
 }
 
 /*body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding-bottom: 100px;*/ /* Space for floating timer */
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding-bottom: 100px;*/ /* Space for floating timer */
 /*}*/
 
 /* Main Timer Card */
@@ -624,7 +690,7 @@ html {
 
 .floating-timer-header {
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
 }
@@ -760,18 +826,215 @@ html {
 .btn-group-sm > .btn, .btn-sm {
     border-radius: 6px;
 }
+
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 a {
     color: #0000;
 }
 
+#sessionCompleteModal {
+    display: none;
+}
 
+.session-complete-modal.show {
+    display: flex;
+}
 
+<style >
+:root {
+    /* Restoring your exact palette */
+    --note-yellow: #fff9c4; /* brighter, sunny yellow */
+    --note-green: #d1fae5; /* fresh mint green */
+    --note-blue: #bae6fd; /* sky blue (still calm but brighter) */
+    --note-orange: #fed7aa; /* warm peach-orange */
+    --note-pink: #fbcfe8; /* soft bright pink */
+    --grid-border: rgba(148, 163, 184, 0.15); /* slightly more visible but soft */
+}
+
+.timeline-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px;
+}
+
+.timeline-row {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    min-height: 150px;
+    border: 1px solid var(--grid-border);
+}
+
+.day-sidebar {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-right: 1px solid var(--grid-border);
+}
+
+.day-text {
+    color: black;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.325rem;
+}
+
+.sessions-track {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+    overflow-x: auto;
+}
+
+/* THE STICKY NOTE LOOK */
+.sticky-note {
+    min-width: 180px;
+    height: 120px;
+    padding: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+    border-bottom-right-radius: 20px 5px; /* Subtle paper curl effect */
+}
+
+    /* Tilt every other note for that "posted" feel */
+    .sticky-note:nth-child(odd) {
+        transform: rotate(-1deg);
+    }
+
+    .sticky-note:nth-child(even) {
+        transform: rotate(1.5deg);
+    }
+
+    .sticky-note:hover {
+        transform: scale(1.08) rotate(0deg) !important;
+        z-index: 10;
+        box-shadow: 8px 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Frosted Tape at the top */
+    .sticky-note::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 35%;
+        width: 30%;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(2px);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+.note-time {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(0,0,0,0.4);
+}
+
+.note-subject {
+    color: #2d3748;
+    font-weight: 800;
+    font-size: 1.05rem;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Mapping your original classes */
+.note-yellow {
+    background-color: var(--note-yellow);
+}
+
+.note-green {
+    background-color: var(--note-green);
+}
+
+.note-blue {
+    background-color: var(--note-blue);
+}
+
+.note-orange {
+    background-color: var(--note-orange);
+}
+
+.note-pink {
+    background-color: var(--note-pink);
+}
+
+</style >
+.sessions-track {
+    flex-grow: 1;
+    gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sticky-note {
+    background-color: #fefce8; /* Very bright lemon cream */
+    border: 1px solid #ddd6fe;
+    width: 200px;
+    padding: 12px;
+    border-radius: 8px;
+    position: relative;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+    .sticky-note:nth-child(even) {
+        background-color: #ede9fe; /* Bright lavender */
+        border-color: #a5b4fc;
+    }
+
+    .sticky-note:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+.note-pin {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-peach);
+    border-radius: 50%;
+    position: absolute;
+    top: 8px;
+    left: 10px;
+}
+
+.note-time {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #888;
+    margin-bottom: 4px;
+    padding-left: 12px; /* Moves text away from pin */
+}
+
+.note-subject {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+    padding-left: 12px;
+}
+
+.btn-add-new {
+    background: var(--lavender-deep);
+    color: white;
+    border: none;
+}

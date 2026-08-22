@@ -1,0 +1,180 @@
+/* ============================================================
+   StudyPal – Study Session Form (Warm Focus Palette)
+   ============================================================ */
+
+/* ---------- Card ---------- */
+.study-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(27, 42, 74, 0.08);
+    border: none;
+}
+
+    /* Card heading */
+    .study-card h2.fw-bold {
+        color: #1B2A4A; /* Deep Navy */
+    }
+
+    .study-card p.text-muted {
+        color: #8E9AAF !important; /* Muted Slate */
+    }
+
+/* ---------- Form ---------- */
+.form-floating .form-control {
+    border-color: #E0DCD5;
+    color: #1B2A4A;
+    background-color: #FDF6F0; /* Warm Ivory */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+    .form-floating .form-control:focus {
+        border-color: #FF6B5B;
+        box-shadow: 0 0 0 0.2rem rgba(255, 107, 91, 0.15);
+        background-color: #ffffff;
+    }
+
+.form-floating label {
+    color: #8E9AAF;
+}
+
+/* ---------- Duration Buttons ---------- */
+.duration-btn {
+    border: 2px solid #E0DCD5;
+    background: #ffffff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .duration-btn:hover {
+        border-color: #FF6B5B;
+        background: #FFF5F3; /* very light coral */
+    }
+
+    .duration-btn.selected {
+        border-color: #FF6B5B;
+        background: #FF6B5B;
+        color: #ffffff;
+    }
+
+        .duration-btn.selected small {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+    .duration-btn small {
+        color: #8E9AAF !important;
+    }
+
+/* Custom time input */
+.custom-time {
+    border: 2px solid #E0DCD5;
+    background: #FDF6F0;
+    border-radius: 10px;
+}
+
+.time-input {
+    border-color: #E0DCD5;
+}
+
+    .time-input:focus {
+        border-color: #FF6B5B;
+        box-shadow: 0 0 0 0.15rem rgba(255, 107, 91, 0.15);
+    }
+
+.time-label {
+    color: #8E9AAF;
+}
+
+/* ---------- Start Button ---------- */
+#startStudyBtn,
+.btn-primary {
+    background-color: #FF6B5B !important;
+    border-color: #FF6B5B !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    transition: all 0.25s;
+}
+
+    #startStudyBtn:hover,
+    .btn-primary:hover {
+        background-color: #e85d4f !important;
+        border-color: #e85d4f !important;
+        box-shadow: 0 6px 18px rgba(255, 107, 91, 0.35);
+    }
+
+/* ---------- Timer Section ---------- */
+.timer-section {
+    margin-top: 30px;
+}
+
+    .timer-section h3#studySubject {
+        color: #FF6B5B !important; /* Coral for active subject */
+    }
+
+.progress-bar {
+    background-color: #98D8C8 !important; /* Mint */
+}
+
+.timer-display {
+    color: #1B2A4A !important;
+    background: #FDF6F0;
+    border: 2px solid #E0DCD5;
+    border-radius: 12px;
+}
+
+/* Timer control buttons */
+#pauseBtn,
+.btn-warning {
+    background-color: #FFB156 !important; /* warm amber – soft warning */
+    border-color: #FFB156 !important;
+    color: #1B2A4A !important;
+    font-weight: 500;
+}
+
+    #pauseBtn:hover {
+        background-color: #F0A04A !important;
+    }
+
+#resumeBtn,
+.btn-success {
+    background-color: #98D8C8 !important; /* Mint */
+    border-color: #98D8C8 !important;
+    color: #1B2A4A !important;
+    font-weight: 500;
+}
+
+    #resumeBtn:hover {
+        background-color: #7CC4B0 !important;
+    }
+
+#stopBtn,
+.btn-danger {
+    background-color: #FF6B5B !important; /* Coral (but you could use a deeper red if preferred) */
+    border-color: #FF6B5B !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+    #stopBtn:hover {
+        background-color: #e85d4f !important;
+    }
+
+/* Session duration text */
+#sessionDuration {
+    color: #8E9AAF;
+}
+
+/* If you uncomment the modal later, these will style it */
+.session-complete-content h2 {
+    color: #1B2A4A;
+}
+
+.session-complete-content .btn-success {
+    background-color: #98D8C8 !important;
+    border-color: #98D8C8 !important;
+}
+
+.session-complete-content .btn-primary {
+    background-color: #FF6B5B !important;
+    border-color: #FF6B5B !important;
+}

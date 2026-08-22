@@ -1,352 +1,471 @@
-﻿@{
+﻿@model MyModels.TimetableInputModel
+@{
     ViewData["Title"] = "Study Timetable Creator";
 }
 
-    <div class="container">
-        <h2>📚 Create Study Timetable</h2>
+<div class="container">
+    <h2>📅 Create Your Study Timetable</h2>
+    <form id="timetableForm" asp-action="Create" method="post">
 
-        <form id="timetableForm" method="post">
-            <div class="form-section">
-                <h3>📖 Subjects</h3>
-                <div id="subjects-container">
+        <!-- Subjects Section -->
+        <div class="form-section">
+            <h3>📖 Subjects</h3>
+            <div id="subjects-container">
+                @for (int i = 0; i < Model.Subjects.Count; i++)
+                {
                     <div class="subject-group">
-                        <input name="Subjects[0].Name" placeholder="Enter subject name" required />
-                        <select name="Subjects[0].Difficulty" required>
-                            <option value="">Select Difficulty</option>
+                        <input asp-for="Subjects[i].Name" placeholder="Subject name" required />
+                        <select asp-for="Subjects[i].Difficulty" required>
                             <option value="Easy">Easy</option>
-                            <option value="Medium">Medium</option>
+                            <option value="Medium" selected>Medium</option>
                             <option value="Hard">Hard</option>
                         </select>
-                        <button type="button" class="remove-btn" onclick="removeSubject(this)" title="Remove subject">×</button>
+                        @if (i > 0)
+                        {
+                            <button type="button" class="remove-btn" onclick="removeSubject(this)">×</button>
+                        }
                     </div>
-                </div>
-                <button type="button" id="addSubjectBtn" class="btn btn-secondary">
-                    ➕ Add Another Subject
-                </button>
+                }
             </div>
+            <button type="button" id="addSubjectBtn" class="btn btn-secondary">➕ Add Subject</button>
+        </div>
 
-            <div class="form-section">
-                <h3>⏰ Study Hours Per Day</h3>
-                <div class="day-group">
-                    <label>Sunday</label>
-                    <input type="number" min="0" max="24" name="DailyStudyHours[Sunday].Hours" value="0" />
-                    <input type="hidden" name="DailyStudyHours[Sunday].Day" value="Sunday" />
-                </div>
-                <div class="day-group">
-                    <label>Monday</label>
-                    <input type="number" min="0" max="24" name="DailyStudyHours[Monday].Hours" value="0" />
-                    <input type="hidden" name="DailyStudyHours[Monday].Day" value="Monday" />
-                </div>
-                <div class="day-group">
-                    <label>Tuesday</label>
-                    <input type="number" min="0" max="24" name="DailyStudyHours[Tuesday].Hours" value="0" />
-                    <input type="hidden" name="DailyStudyHours[Tuesday].Day" value="Tuesday" />
-                </div>
-                <div class="day-group">
-                    <label>Wednesday</label>
-                    <input type="number" min="0" max="24" name="DailyStudyHours[Wednesday].Hours" value="0" />
-                    <input type="hidden" name="DailyStudyHours[Wednesday].Day" value="Wednesday" />
-                </div>
-                <div class="day-group">
-                    <label>Thursday</label>
-                    <input type="number" min="0" max="24" name="DailyStudyHours[Thursday].Hours" value="0" />
-                    <input type="hidden" name="DailyStudyHours[Thursday].Day" value="Thursday" />
-                </div>
-                <div class="day-group">
-                    <label>Friday</label>
-                    <input type="number" min="0" max="24" name="DailyStudyHours[Friday].Hours" value="0" />
-                    <input type="hidden" name="DailyStudyHours[Friday].Day" value="Friday" />
-                </div>
-                <div class="day-group">
-                    <label>Saturday</label>
-                    <input type="number" min="0" max="24" name="DailyStudyHours[Saturday].Hours" value="0" />
-                    <input type="hidden" name="DailyStudyHours[Saturday].Day" value="Saturday" />
-                </div>
-            </div>
+        <!-- Free Time Slots Section -->
+        <div class="form-section">
+            <h3>⏰ Free Time Slots</h3>
+            <p class="help-text">Add the time periods when you are free to study each day. (Use 12-hour format with AM/PM)</p>
 
-            <button type="submit" class="btn btn-primary btn-submit">
-                🚀 Generate My Timetable
-            </button>
-        </form>
-    </div>
+            @for (int dayIndex = 0; dayIndex < Model.DailyFreeSlots.Count; dayIndex++)
+            {
+                var day = Model.DailyFreeSlots[dayIndex];
+                <div class="day-section">
+                    <h4>@day.Day</h4>
+                    <div id="slots-container-@dayIndex" class="slots-container">
+                        @for (int slotIndex = 0; slotIndex < day.FreeSlots.Count; slotIndex++)
+                        {
+                            <div class="time-slot-group">
+                                <div class="time-pair">
+                                    <!-- Start Time - 12 Hour -->
+                                    <div class="custom-time-input">
+                                        <select class="time-input hour-select" onchange="convertTo24Hour(this)">
+                                            <option value="">HH</option>
+                                        </select>
+                                        <span class="colon">:</span>
+                                        <select class="time-input minute-select" onchange="convertTo24Hour(this)">
+                                            <option value="00">00</option>
+                                            <option value="15">15</option>
+                                            <option value="30">30</option>
+                                            <option value="45">45</option>
+                                        </select>
+                                        <select class="time-input ampm-select" onchange="convertTo24Hour(this)">
+                                            <option value="AM">AM</option>
+                                            <option value="PM">PM</option>
+                                        </select>
+                                    </div>
 
-    <style>
-    /* .container {
-        max-width: 800px;
-        margin: 0 auto;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    } */
+                                    <span class="to">to</span>
 
-    /* h2 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 30px;
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+                                    <!-- End Time - 12 Hour -->
+                                    <div class="custom-time-input">
+                                        <select class="time-input hour-select" onchange="convertTo24Hour(this)">
+                                            <option value="">HH</option>
+                                        </select>
+                                        <span class="colon">:</span>
+                                        <select class="time-input minute-select" onchange="convertTo24Hour(this)">
+                                            <option value="00">00</option>
+                                            <option value="15">15</option>
+                                            <option value="30">30</option>
+                                            <option value="45">45</option>
+                                        </select>
+                                        <select class="time-input ampm-select" onchange="convertTo24Hour(this)">
+                                            <option value="AM">AM</option>
+                                            <option value="PM" selected>PM</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                @if (slotIndex > 0 || day.FreeSlots.Count > 1)
+                                {
+                                    <button type="button" class="remove-slot-btn"
+                                            onclick="removeTimeSlot(this, @dayIndex)">
+                                        ×
+                                    </button>
+                                }
+                                <span class="time-error-msg"></span>
+
+                                <!-- Hidden real fields for model binding -->
+                                <input type="hidden" name="DailyFreeSlots[@dayIndex].Day" value="@day.Day" />
+                                <input type="hidden" name="DailyFreeSlots[@dayIndex].FreeSlots[@slotIndex].StartTime"
+                                       class="real-start-time" value="00:00" />
+                                <input type="hidden" name="DailyFreeSlots[@dayIndex].FreeSlots[@slotIndex].EndTime"
+                                       class="real-end-time" value="00:00" />
+
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="btn btn-secondary add-slot-btn"
+                            onclick="addTimeSlot(@dayIndex)">
+                        ➕ Add Time Slot for @day.Day
+                    </button>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-submit">
+            🚀 Generate My Timetable
+        </button>
+    </form>
+</div>
+
+<style>
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
     }
 
-    h3 {
-        color: #444;
-        margin-bottom: 20px;
-        font-size: 1.5rem;
-        font-weight: 600;
-        border-bottom: 2px solid #667eea;
-        padding-bottom: 10px;
-    } */
-
     .form-section {
-        margin-bottom: 40px;
+        background: #f8f9ff;
         padding: 25px;
-        background: rgba(255, 255, 255, 0.7);
-        border-radius: 15px;
-        border: 1px solid rgba(102, 126, 234, 0.2);
+        border-radius: 16px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .day-section {
+        margin-bottom: 35px;
+        padding: 20px;
+        background: rgba(255,255,255,0.7);
+        border-radius: 12px;
+        border: 1px solid rgba(102,126,234,0.15);
     }
 
     .subject-group {
         display: flex;
-        gap: 15px;
-        margin-bottom: 15px;
         align-items: center;
-        padding: 15px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        gap: 12px;
+        margin-bottom: 12px;
     }
 
-        .subject-group:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .subject-group input {
-            flex: 2;
-        }
-
+        .subject-group input,
         .subject-group select {
-            flex: 1;
-        }
-
-    .remove-btn {
-        background: #ff4757;
-        color: white;
-        border: none;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-    }
-
-        .remove-btn:hover {
-            background: #ff3742;
-            transform: scale(1.1);
-        }
-
-    input, select {
-        padding: 12px 16px;
-        border: 2px solid #e1e8ed;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        background: white;
-    }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-    .day-group {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        padding: 15px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-        .day-group label {
-            font-weight: 600;
-            color: #555;
-            width: 120px;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-size: 16px;
         }
 
-        .day-group input {
-            width: 100px;
-            margin-left: auto;
-        }
+    .time-slot-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        background: white;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
 
-    .btn {
-        padding: 12px 24px;
-        border: none;
+    .time-pair {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .custom-time-input {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .time-input {
+        padding: 10px 10px;
+        border: 2px solid #e1e8ed;
         border-radius: 8px;
         font-size: 16px;
+        background: #fff;
+    }
+
+    .colon {
         font-weight: 600;
+        color: #777;
+    }
+
+    .to {
+        font-weight: 600;
+        color: #555;
+        min-width: 25px;
+        text-align: center;
+    }
+
+    .remove-slot-btn, .remove-btn {
+        background: #ff4757;
+        color: white;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
         cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-flex;
+        font-size: 20px;
+        display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center;
+        flex-shrink: 0;
     }
 
-    .btn-primary {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    .remove-btn {
+        margin-left: 12px;
     }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
+    .time-error-msg {
+        color: #ff4757;
+        font-size: 0.9rem;
+        margin-left: 12px;
+        font-weight: 500;
+    }
 
-    .btn-secondary {
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-        color: white;
+    .help-text {
+        color: #666;
+        font-size: 0.95rem;
         margin-bottom: 20px;
     }
 
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
-        }
-
-    .btn-submit {
-        width: 100%;
-        padding: 16px;
-        font-size: 18px;
-        margin-top: 30px;
-        background: linear-gradient(135deg, #11998e, #38ef7d);
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     }
 
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
-        }
+    .time-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    }
+</style>
+<script>
+    // === Add Subject Functionality ===
+    document.getElementById('addSubjectBtn').addEventListener('click', function () {
+        const container = document.getElementById('subjects-container');
+        const subjectCount = container.querySelectorAll('.subject-group').length;
 
-    .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: #888;
-        font-style: italic;
+        const div = document.createElement('div');
+        div.className = 'subject-group';
+        div.innerHTML = `
+            <input name="Subjects[${subjectCount}].Name" placeholder="Subject name" required />
+            <select name="Subjects[${subjectCount}].Difficulty" required>
+                <option value="Easy">Easy</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
+            <button type="button" class="remove-btn" onclick="removeSubject(this)">×</button>
+        `;
+        container.appendChild(div);
+    });
+
+    function removeSubject(button) {
+        const container = document.getElementById('subjects-container');
+        if (container.querySelectorAll('.subject-group').length > 1) {
+            button.parentElement.remove();
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cannot Remove',
+                text: 'You must have at least one subject!',
+                confirmButtonColor: '#667eea'
+            });
+        }
     }
 
+    // === Add Time Slot with 12-Hour Format ===
+    function addTimeSlot(dayIndex) {
+        const container = document.getElementById(`slots-container-${dayIndex}`);
+        const slotCount = container.querySelectorAll('.time-slot-group').length;
 
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const addBtn = document.getElementById('addSubjectBtn');
-            const container = document.getElementById('subjects-container');
-
-            addBtn.addEventListener('click', function () {
-                const index = container.querySelectorAll('.subject-group').length;
-                const div = document.createElement('div');
-                div.className = 'subject-group';
-                div.innerHTML = `
-                    <input name="Subjects[${index}].Name" placeholder="Enter subject name" required />
-                    <select name="Subjects[${index}].Difficulty" required>
-                        <option value="">Select Difficulty</option>
-                        <option value="Easy">Easy</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Hard">Hard</option>
+        const div = document.createElement('div');
+        div.className = 'time-slot-group';
+        div.innerHTML = `
+            <div class="time-pair">
+                <!-- Start Time - 12 Hour -->
+                <div class="custom-time-input">
+                    <select class="time-input hour-select" onchange="convertTo24Hour(this)">
+                        <option value="">HH</option>
                     </select>
-                    <button type="button" class="remove-btn" onclick="removeSubject(this)" title="Remove subject">×</button>
-                `;
-                container.appendChild(div);
-            });
+                    <span class="colon">:</span>
+                    <select class="time-input minute-select" onchange="convertTo24Hour(this)">
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                    <select class="time-input ampm-select" onchange="convertTo24Hour(this)">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
 
-            // Form submission handler
-            document.getElementById('timetableForm').addEventListener('submit', function(e) {
-                e.preventDefault();
+                <span class="to">to</span>
 
-                // Collect form data
-                const formData = new FormData(this);
-                const data = {};
+                <!-- End Time - 12 Hour -->
+                <div class="custom-time-input">
+                    <select class="time-input hour-select" onchange="convertTo24Hour(this)">
+                        <option value="">HH</option>
+                    </select>
+                    <span class="colon">:</span>
+                    <select class="time-input minute-select" onchange="convertTo24Hour(this)">
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                    </select>
+                    <select class="time-input ampm-select" onchange="convertTo24Hour(this)">
+                        <option value="AM">AM</option>
+                        <option value="PM" selected>PM</option>
+                    </select>
+                </div>
+            </div>
 
-                // Process subjects
-                const subjects = [];
-                const subjectInputs = document.querySelectorAll('[name^="Subjects["]');
-                const processedIndices = new Set();
+            <button type="button" class="remove-slot-btn" onclick="removeTimeSlot(this, ${dayIndex})">×</button>
+            <span class="time-error-msg"></span>
 
-                subjectInputs.forEach(input => {
-                    const match = input.name.match(/Subjects\[(\d+)\]\.(\w+)/);
-                    if (match) {
-                        const index = parseInt(match[1]);
-                        const property = match[2];
+            <!-- Hidden fields that submit to your model (TimeOnly) -->
+            <input type="hidden" name="DailyFreeSlots[${dayIndex}].FreeSlots[${slotCount}].StartTime" class="real-start-time" value="00:00" />
+            <input type="hidden" name="DailyFreeSlots[${dayIndex}].FreeSlots[${slotCount}].EndTime" class="real-end-time" value="00:00" />
+        `;
+        container.appendChild(div);
 
-                        if (!subjects[index]) {
-                            subjects[index] = {};
-                        }
-                        subjects[index][property] = input.value;
-                        processedIndices.add(index);
-                    }
-                });
+        populateHourSelects(div);
+    }
 
-                // Process daily study hours
-                const dailyHours = {};
-                const hourInputs = document.querySelectorAll('[name*="DailyStudyHours"]');
-                hourInputs.forEach(input => {
-                    const match = input.name.match(/DailyStudyHours\[(\w+)\]\.(\w+)/);
-                    if (match) {
-                        const day = match[1];
-                        const property = match[2];
-
-                        if (!dailyHours[day]) {
-                            dailyHours[day] = {};
-                        }
-                        dailyHours[day][property] = input.value;
-                    }
-                });
-
-                data.subjects = subjects.filter(subject => subject && subject.Name && subject.Difficulty);
-                data.dailyStudyHours = dailyHours;
-
-                // Display collected data (in a real app, this would be sent to server)
-                console.log('Timetable Data:', data);
-                alert('Timetable data collected! Check console for details. In a real application, this would be sent to the server.');
-            });
+    // Populate hours 1-12
+    function populateHourSelects(group) {
+        const hourSelects = group.querySelectorAll('.hour-select');
+        hourSelects.forEach(select => {
+            select.innerHTML = '<option value="">HH</option>';
+            for (let i = 1; i <= 12; i++) {
+                const val = i.toString().padStart(2, '0');
+                const option = document.createElement('option');
+                option.value = val;
+                option.textContent = val;
+                select.appendChild(option);
+            }
         });
+    }
 
-        function removeSubject(button) {
-            const subjectGroup = button.parentElement;
-            const container = document.getElementById('subjects-container');
+    // Convert 12-hour format to 24-hour and update hidden fields
+    function convertTo24Hour(element) {
+        const group = element.closest('.time-slot-group');
+        const customInputs = group.querySelectorAll('.custom-time-input');
 
-            // Don't allow removing the last subject
-            if (container.querySelectorAll('.subject-group').length > 1) {
-                subjectGroup.remove();
-                updateSubjectIndices();
-            } else {
-                alert('You must have at least one subject!');
+        // Start Time
+        const startHourSelect = customInputs[0].querySelector('.hour-select');
+        const startMinSelect = customInputs[0].querySelector('.minute-select');
+        const startAmPmSelect = customInputs[0].querySelector('.ampm-select');
+
+        // End Time
+        const endHourSelect = customInputs[1].querySelector('.hour-select');
+        const endMinSelect = customInputs[1].querySelector('.minute-select');
+        const endAmPmSelect = customInputs[1].querySelector('.ampm-select');
+
+        // Convert Start Time
+        if (startHourSelect.value && startMinSelect.value && startAmPmSelect.value) {
+            let hour = parseInt(startHourSelect.value);
+            if (startAmPmSelect.value === "PM" && hour !== 12) hour += 12;
+            if (startAmPmSelect.value === "AM" && hour === 12) hour = 0;
+
+            const startTime24 = `${hour.toString().padStart(2, '0')}:${startMinSelect.value}`;
+            group.querySelector('.real-start-time').value = startTime24;
+        }
+
+        // Convert End Time
+        if (endHourSelect.value && endMinSelect.value && endAmPmSelect.value) {
+            let hour = parseInt(endHourSelect.value);
+            if (endAmPmSelect.value === "PM" && hour !== 12) hour += 12;
+            if (endAmPmSelect.value === "AM" && hour === 12) hour = 0;
+
+            const endTime24 = `${hour.toString().padStart(2, '0')}:${endMinSelect.value}`;
+            group.querySelector('.real-end-time').value = endTime24;
+        }
+
+        // Trigger validation
+        validateTimeSlot(element);
+    }
+
+    // Remove Time Slot
+    function removeTimeSlot(button, dayIndex) {
+        const container = document.getElementById(`slots-container-${dayIndex}`);
+        if (container.querySelectorAll('.time-slot-group').length > 1) {
+            button.parentElement.remove();
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Cannot Remove',
+                text: 'You must have at least one time slot per day!',
+                confirmButtonColor: '#667eea'
+            });
+        }
+    }
+
+    // Updated Validation - Works with hidden real time fields (00:00 allowed)
+    function validateTimeSlot(input) {
+        const group = input.closest('.time-slot-group');
+        const startInput = group.querySelector('.real-start-time');
+        const endInput = group.querySelector('.real-end-time');
+        const errorSpan = group.querySelector('.time-error-msg');
+
+        const start = startInput.value;
+        const end = endInput.value;
+
+        if (start && end) {
+            if (start === "00:00" && end === "00:00") {
+                errorSpan.textContent = "✓ No study time this day";
+                errorSpan.style.color = "#28a745";
+            }
+            else if (start >= end) {
+                errorSpan.textContent = "End time must be after start time";
+                errorSpan.style.color = "#ff4757";
+            }
+            else {
+                errorSpan.textContent = "";
+            }
+        }
+    }
+
+    // Form Submit Validation
+    document.getElementById('timetableForm').addEventListener('submit', function (e) {
+        let isValid = true;
+
+        const timeGroups = document.querySelectorAll('.time-slot-group');
+
+        for (let group of timeGroups) {
+            const start = group.querySelector('.real-start-time').value;
+            const end = group.querySelector('.real-end-time').value;
+            const errorSpan = group.querySelector('.time-error-msg');
+
+            if (start && end) {
+                if (start !== "00:00" || end !== "00:00") {
+                    if (start >= end) {
+                        errorSpan.textContent = "End time must be after start time";
+                        isValid = false;
+                    }
+                }
             }
         }
 
-        function updateSubjectIndices() {
-            const container = document.getElementById('subjects-container');
-            const subjectGroups = container.querySelectorAll('.subject-group');
-
-            subjectGroups.forEach((group, index) => {
-                const nameInput = group.querySelector('input[name*="Name"]');
-                const difficultySelect = group.querySelector('select[name*="Difficulty"]');
-
-                if (nameInput) nameInput.name = `Subjects[${index}].Name`;
-                if (difficultySelect) difficultySelect.name = `Subjects[${index}].Difficulty`;
+        if (!isValid) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Time Error',
+                text: 'End time must be later than start time (except for 00:00 - 00:00 which means no free time)',
+                confirmButtonColor: '#667eea'
             });
         }
-    </script>
+    });
+
+    // Initialize hour dropdowns for existing slots on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        const existingGroups = document.querySelectorAll('.time-slot-group');
+        existingGroups.forEach(group => {
+            populateHourSelects(group);
+        });
+    });
+</script>

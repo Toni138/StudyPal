@@ -136,7 +136,7 @@ namespace StudyPal.Controllers
             HttpContext.Session.Remove("ReviewSession");
             HttpContext.Session.Remove("ReviewedCards");
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Flashcards");
         }
         [HttpPost]
         public async Task<IActionResult> Create(Flashcard obj)
@@ -236,8 +236,9 @@ namespace StudyPal.Controllers
             // Update user stats
             var UserStats = _unitOfWork.UserStats.Get(f => f.UserId == flashcard.UserId);
             UserStats.FlashcardsReviewed += 1;
+            bool hasReviewedFlashcardsToday = true;
             var streakManager = new StreakManager(_unitOfWork);
-            streakManager.UpdateStreak(UserStats);
+            streakManager.UpdateStreak(UserStats,hasReviewedFlashcardsToday,null);
 
             // Save the changes
             _unitOfWork.Flashcard.Update(flashcard);
@@ -294,10 +295,10 @@ namespace StudyPal.Controllers
         {
             // Get user ID from session
             string userIdString = HttpContext.Session.GetString("UserId");
+
             if (!Guid.TryParse(userIdString, out Guid userId))
-            {
-                return RedirectToAction("Login", "Home" );
-            }
+                return RedirectToAction("Login");
+
 
             // Validate count
             if (count <= 0)

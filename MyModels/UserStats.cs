@@ -10,7 +10,7 @@ public class UserStats
     public DateTime? LastActivityDate { get; set; }
     public int LongestStreak { get; set; }
     public int CurrentStreak { get; set; }
-    public int TotalStudyHours { get; set; }
+    public double TotalStudyHours { get; set; }
     public double AverageDailyStudyHours { get; set; }
     public List<SubjectStudyHours> HoursPerSubject { get; set; } = new List<SubjectStudyHours>();
     public int FlashcardsReviewed { get; set; }

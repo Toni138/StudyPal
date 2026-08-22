@@ -7,8 +7,9 @@ namespace MyModels
         public Guid Id { get; set; } = Guid.NewGuid();
         [Required]
         public string Username { get; set; }
-        
+        [Required]
         public string EmailAddress { get; set; }
+        [Required]
         public string PasswordHash { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsEmailVerified { get; set; } = false;

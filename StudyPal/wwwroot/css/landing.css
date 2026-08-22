@@ -1,0 +1,173 @@
+/* ============================================================
+   StudyPal – Landing Page (Focused Mind Palette)
+   ============================================================ */
+
+.landing-hero {
+    text-align: center;
+    padding: 3.5rem 2rem 2.5rem;
+}
+
+.landing-eyebrow {
+    display: inline-block;
+    background: #E8E6FF;
+    color: #4A43CC;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.03em;
+}
+
+.landing-title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: #2B2D42;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+}
+
+    .landing-title span {
+        color: #6C63FF;
+    }
+
+.landing-sub {
+    font-size: 1rem;
+    color: #8D99AE;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.landing-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-landing-primary {
+    background: #6C63FF;
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1.6rem;
+    border-radius: 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+    .btn-landing-primary:hover {
+        background: #5A52E0;
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(108, 99, 255, 0.35);
+        text-decoration: none;
+    }
+
+.btn-landing-secondary {
+    background: #fff;
+    color: #6C63FF;
+    border: 1.5px solid #6C63FF;
+    padding: 0.65rem 1.6rem;
+    border-radius: 24px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+    .btn-landing-secondary:hover {
+        background: #F0EFFE;
+        color: #6C63FF;
+        text-decoration: none;
+    }
+
+/* ---------- Feature cards ---------- */
+.landing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    padding: 0 2rem 1.5rem;
+}
+
+.landing-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 1.4rem;
+    border: 1px solid #EAEDF0;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s;
+    display: block;
+}
+
+    .landing-card:hover {
+        border-color: #6C63FF;
+        transform: translateY(-3px);
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 8px 24px rgba(108, 99, 255, 0.1);
+    }
+
+.lc-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.lc-purple {
+    background: #E8E6FF;
+    color: #6C63FF;
+}
+
+.lc-green {
+    background: #EDF7E0;
+    color: #5A8A2A;
+}
+
+.lc-indigo {
+    background: #EDEAFF;
+    color: #4A43CC;
+}
+
+.lc-slate {
+    background: #EEF0F5;
+    color: #8D99AE;
+}
+
+.lc-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2B2D42;
+    margin-bottom: 4px;
+}
+
+.lc-desc {
+    font-size: 0.8rem;
+    color: #8D99AE;
+    line-height: 1.5;
+}
+
+/* ---------- Trust bar ---------- */
+.landing-trust {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 0 2rem 2.5rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: #8D99AE;
+}
+
+    .landing-trust i {
+        color: #A3D977;
+    }

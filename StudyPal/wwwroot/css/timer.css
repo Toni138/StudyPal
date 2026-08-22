@@ -1,0 +1,272 @@
+/* ============================================================
+   StudyPal – Timer & Session Modal Styles
+   ============================================================ */
+
+/* Main Timer Card */
+.timer-display {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    border: 3px solid #dee2e6;
+}
+
+.timer-controls {
+    text-align: center;
+    margin: 20px 0;
+}
+
+    .timer-controls button {
+        margin: 0 10px;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+
+.finished {
+    color: #dc3545 !important;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.timer-section {
+    display: none;
+    margin-top: 30px;
+}
+
+    .timer-section.show {
+        display: block;
+    }
+
+.progress-bar {
+    transition: width 1s ease;
+}
+
+/* Duration buttons */
+.duration-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.duration-btn {
+    padding: 15px;
+    border: 2px solid #dee2e6;
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+    .duration-btn:hover {
+        border-color: #0d6efd;
+        background: #f0f8ff;
+    }
+
+    .duration-btn.selected {
+        border-color: #0d6efd;
+        background: #0d6efd;
+        color: white;
+    }
+
+.custom-time {
+    margin-top: 15px;
+    padding: 15px;
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    background: #f8f9fa;
+}
+
+.time-input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.time-input {
+    width: 60px;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.time-label {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+/* Floating Timer Widget */
+.floating-timer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 15px;
+    z-index: 1000;
+    min-width: 250px;
+    display: none;
+    border: 3px solid #0d6efd;
+}
+
+    .floating-timer.show {
+        display: block;
+        animation: slideIn 0.3s ease;
+    }
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.floating-timer.minimized {
+    width: 200px;
+    cursor: pointer;
+}
+
+.floating-timer.expanded {
+    width: 300px;
+}
+
+.floating-timer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.floating-timer-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    color: #0d6efd;
+}
+
+.floating-timer-subject {
+    font-size: 0.9rem;
+    color: #6c757d;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.floating-controls {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+    .floating-controls button {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        border-radius: 5px;
+    }
+
+.minimize-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #6c757d;
+}
+
+/* Navigation links inside the timer page */
+.navigation-links {
+    margin: 20px 0;
+    text-align: center;
+}
+
+    .navigation-links a {
+        margin: 0 10px;
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.2);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .navigation-links a:hover {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+/* Session Complete Modal */
+.session-complete-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+    .session-complete-modal.show {
+        display: flex;
+    }
+
+.session-complete-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Helper for hiding the modal statically if needed */
+#sessionCompleteModal {
+    display: none;
+}
+
+.session-complete-modal.show {
+    display: flex;
+}

@@ -1,0 +1,45 @@
+﻿@model List<MyModels.StudySession>
+
+    <h2>Your Timetable</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Subject</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <!-- Empty State -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body text-center py-5">
+                                <div class="mb-3">
+                                    <i class="bi bi-calendar4-week display-1 text-muted"></i>
+                                </div>
+                                <h4 class="text-muted mb-2">No Timetable</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @foreach (var session in Model)
+                {
+                    <tr>
+                        <td>@session.DayOfWeek</td>
+                        <td>@session.Subject</td>
+                        <td>@session.StartTime.ToString("hh:mm tt")</td>
+                        <td>@session.EndTime.ToString("hh:mm tt")</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+    <a asp-action="Create">Create Another Timetable</a>

@@ -9,5 +9,6 @@ namespace MyModels;
 public class TimetableInputModel
 {
     public List<Subject> Subjects { get; set; } = new List<Subject>();
-    public List<DailyStudyHours> DailyStudyHours { get; set; } = new List<DailyStudyHours>();
+
+    public List<DailyFreeSlots> DailyFreeSlots { get; set; } = new List<DailyFreeSlots>();
 }

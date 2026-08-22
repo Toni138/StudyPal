@@ -12,41 +12,52 @@ namespace Utility
             _unitOfWork = unitOfWork;
         }
 
-        public void UpdateStreak(UserStats userStats)
+        public void UpdateStreak(UserStats userStats, bool? hasReviewedFlashcardsToday, bool? hasTakenStudySessionToday)
         {
             var today = DateTime.Today;
+            var yesterday = today.AddDays(-1);
+            var lastActivityDate = userStats.LastActivityDate?.Date;
 
-            if (userStats.LastActivityDate == null)
-            {
-                userStats.CurrentStreak = 1;
-            }
-            else
-            {
-                var last = userStats.LastActivityDate.Value.Date;
+            // If already updated today, do nothing
+            if (lastActivityDate == today)
+                return;
 
-                if (last == today)
-                {
-                    // Already updated today — do nothing
-                    return;
-                }
-                else if (last == today.AddDays(-1))
+            bool didSomethingToday =  (hasReviewedFlashcardsToday ?? false) || (hasTakenStudySessionToday ?? false);
+
+
+            if (didSomethingToday)
+            {
+                if (lastActivityDate == yesterday)
                 {
                     userStats.CurrentStreak += 1;
                 }
                 else
                 {
+                    if (userStats.CurrentStreak > userStats.LongestStreak)
+                        userStats.LongestStreak = userStats.CurrentStreak;
+
                     userStats.CurrentStreak = 1;
                 }
-            }
-            if (userStats.CurrentStreak > userStats.LongestStreak)
-            {
-                userStats.LongestStreak = userStats.CurrentStreak;
-            }
 
-            userStats.LastActivityDate = today;
+                userStats.LastActivityDate = today;
+            }
+            else
+            {
+                // User hasn’t done anything today, check if yesterday was inactive too
+                if (lastActivityDate != yesterday)
+                {
+                    if (userStats.CurrentStreak > userStats.LongestStreak)
+                        userStats.LongestStreak = userStats.CurrentStreak;
+
+                    userStats.CurrentStreak = 0;
+                }
+
+                // Do not update LastActivityDate here — no activity today
+                return;
+            }
 
             _unitOfWork.UserStats.Update(userStats);
             _unitOfWork.Save();
         }
     }
-}
+    }

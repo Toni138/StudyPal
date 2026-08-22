@@ -1,0 +1,321 @@
+/* ============================================================
+   StudyPal – Flashcard & Review Styles
+   ============================================================ */
+
+/* Generic flashcard list items */
+.flashcard-item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+    .flashcard-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        border-left-color: var(--bs-primary);
+    }
+
+.question-preview:hover .question-text {
+    color: var(--bs-primary) !important;
+}
+
+.question-text {
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
+}
+
+.encouragement-tip {
+    font-size: 1.1rem;
+    background-color: #e7f4ff;
+    border-left: 5px solid #0d6efd;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    color: #333;
+}
+
+/* Full‑page flashcard review view */
+.review-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.custom-alert {
+    max-width: 600px;
+    margin: 0 auto 20px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.header-section {
+    max-width: 800px;
+    margin: 0 auto 30px;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+    .back-btn:hover {
+        background: rgba(255,255,255,0.25);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+/* Flashcard container */
+.flashcard-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.flashcard-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    perspective: 1000px;
+}
+
+.flashcard-side {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    backface-visibility: hidden;
+    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    overflow: hidden;
+}
+
+.flashcard-front.active {
+    transform: rotateY(0deg);
+}
+
+.flashcard-front.flipped {
+    transform: rotateY(-180deg);
+}
+
+.flashcard-back {
+    transform: rotateY(180deg);
+}
+
+    .flashcard-back.active {
+        transform: rotateY(0deg);
+    }
+
+/* Card internal layout */
+.card-header {
+    padding: 15px 30px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.answer-badge {
+    background: linear-gradient(45deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.card-content {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-text {
+    font-size: 20px;
+    line-height: 1.6;
+    text-align: center;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.card-footer {
+    padding: 25px 30px 30px;
+    text-align: center;
+}
+
+/* Buttons */
+.show-answer-btn {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+    .show-answer-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+.review-question {
+    margin-bottom: 25px;
+}
+
+    .review-question p {
+        font-size: 18px;
+        color: #4a5568;
+        margin: 0;
+        font-weight: 500;
+    }
+
+.review-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.review-form {
+    margin: 0;
+}
+
+.review-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    min-width: 160px;
+    justify-content: center;
+}
+
+.wrong-btn {
+    background: linear-gradient(45deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+    .wrong-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    }
+
+.correct-btn {
+    background: linear-gradient(45deg, #51cf66 0%, #40c057 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(81, 207, 102, 0.4);
+}
+
+    .correct-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(81, 207, 102, 0.6);
+    }
+
+/* Progress dots */
+.progress-section {
+    max-width: 800px;
+    margin: 40px auto 0;
+    text-align: center;
+}
+
+.progress-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+}
+
+    .progress-dot.active {
+        background: white;
+        box-shadow: 0 2px 8px rgba(255,255,255,0.3);
+    }
+
+.progress-text {
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .review-container {
+        padding: 15px;
+    }
+
+    .flashcard-container {
+        height: 350px;
+    }
+
+    .content-text {
+        font-size: 18px;
+    }
+
+    .review-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .review-btn {
+        width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-content {
+        padding: 20px;
+    }
+
+    .content-text {
+        font-size: 16px;
+    }
+}

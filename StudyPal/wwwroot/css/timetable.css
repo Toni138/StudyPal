@@ -1,0 +1,136 @@
+﻿/* ============================================================
+   StudyPal – Timetable Sticky‑Note Styles
+   ============================================================ */
+
+:root {
+    --note-yellow: #fff9c4;
+    --note-green: #d1fae5;
+    --note-blue: #bae6fd;
+    --note-orange: #fed7aa;
+    --note-pink: #fbcfe8;
+    --grid-border: rgba(148, 163, 184, 0.15);
+}
+
+.timeline-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px;
+}
+
+.timeline-row {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    min-height: 150px;
+    border: 1px solid var(--grid-border);
+}
+
+.day-sidebar {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-right: 1px solid var(--grid-border);
+}
+
+.day-text {
+    color: black;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.325rem;
+}
+
+.sessions-track {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+    overflow-x: auto;
+}
+
+/* The sticky note look */
+.sticky-note {
+    min-width: 180px;
+    height: 120px;
+    padding: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+    border-bottom-right-radius: 20px 5px; /* paper curl effect */
+}
+
+    /* Tilt effects */
+    .sticky-note:nth-child(odd) {
+        transform: rotate(-1deg);
+    }
+
+    .sticky-note:nth-child(even) {
+        transform: rotate(1.5deg);
+    }
+
+    .sticky-note:hover {
+        transform: scale(1.08) rotate(0deg) !important;
+        z-index: 10;
+        box-shadow: 8px 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Frosted tape at the top */
+    .sticky-note::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 35%;
+        width: 30%;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(2px);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+.note-time {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(0,0,0,0.4);
+}
+
+.note-subject {
+    color: #2d3748;
+    font-weight: 800;
+    font-size: 1.05rem;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Colour mapping for sticky notes */
+.note-yellow {
+    background-color: var(--note-yellow);
+}
+
+.note-green {
+    background-color: var(--note-green);
+}
+
+.note-blue {
+    background-color: var(--note-blue);
+}
+
+.note-orange {
+    background-color: var(--note-orange);
+}
+
+.note-pink {
+    background-color: var(--note-pink);
+}
+
+.btn-add-new {
+    background: var(--lavender-deep, #7c3aed); /* fallback if variable missing */
+    color: white;
+    border: none;
+}

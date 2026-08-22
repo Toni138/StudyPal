@@ -1,0 +1,189 @@
+/* ============================================================
+   StudyPal – Dashboard (Warm Focus Palette)
+   ============================================================ */
+
+.dashboard-wrapper {
+    padding: 2rem;
+    background-color: #FDF6F0; /* Warm Ivory page background */
+    min-height: 100vh;
+}
+
+/* ---------- Header & Tip ---------- */
+.welcome-title {
+    color: #1B2A4A;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+    .welcome-title strong {
+        color: #FF6B5B; /* coral name emphasis */
+    }
+
+.tip-banner {
+    background-color: #F0FAF7; /* very soft mint */
+    border-left: 6px solid #FF6B5B;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    color: #1B2A4A;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+    .tip-banner i {
+        color: #FF6B5B;
+        font-size: 1.4rem;
+    }
+
+/* ---------- Stats Grid ---------- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    box-shadow: 0 8px 20px rgba(27, 42, 74, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 28px rgba(27, 42, 74, 0.12);
+    }
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1B2A4A;
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #8E9AAF;
+    margin-top: 2px;
+}
+
+/* Colored icon backgrounds & left borders */
+.stat-card-streak {
+    border-left-color: #FF6B5B;
+}
+
+    .stat-card-streak .stat-icon {
+        background: linear-gradient(135deg, #FF6B5B, #FF8A7A);
+    }
+
+.stat-card-best {
+    border-left-color: #98D8C8;
+}
+
+    .stat-card-best .stat-icon {
+        background: linear-gradient(135deg, #98D8C8, #6BBFAA);
+    }
+
+.stat-card-hours {
+    border-left-color: #6C63FF;
+}
+    /* a soft indigo to complement navy */
+    .stat-card-hours .stat-icon {
+        background: linear-gradient(135deg, #6C63FF, #8F88FF);
+    }
+
+.stat-card-avg {
+    border-left-color: #FFB156;
+}
+    /* warm amber */
+    .stat-card-avg .stat-icon {
+        background: linear-gradient(135deg, #FFB156, #FFD08A);
+    }
+
+.stat-card-flashcards {
+    border-left-color: #A78BFA;
+}
+
+    .stat-card-flashcards .stat-icon {
+        background: linear-gradient(135deg, #A78BFA, #C4B5FD);
+    }
+
+/* ---------- Quick Actions ---------- */
+.actions-title {
+    color: #1B2A4A;
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+}
+
+.actions-grid {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.action-card {
+    flex: 1 1 180px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: #1B2A4A;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(27, 42, 74, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent;
+}
+
+    .action-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(255, 107, 91, 0.2);
+        color: #1B2A4A;
+        text-decoration: none;
+    }
+
+    .action-card i {
+        font-size: 2rem;
+        color: #FF6B5B;
+    }
+
+.action-card-timetable:hover {
+    border-color: #FF6B5B;
+}
+
+.action-card-flashcards:hover {
+    border-color: #98D8C8;
+}
+
+.action-card-timer:hover {
+    border-color: #6C63FF;
+}
